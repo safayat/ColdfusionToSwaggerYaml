@@ -53,4 +53,26 @@ public class CfFunction{
         this.summary = summary;
     }
 
+    public static String getSpaces(int c){
+        StringBuilder stringBuilder = new StringBuilder();
+        while (c-->0)stringBuilder.append(" ");
+        return stringBuilder.toString();
+    }
+
+    public  String getAsYamlString(int space){
+        StringBuilder yamlStringBuilder = new StringBuilder();
+        yamlStringBuilder.append(getSpaces(space++)).append("/restapi/").append(getName()).append("/:\n");
+        yamlStringBuilder.append(getSpaces(space++)).append(getMethod()).append(":\n");
+        yamlStringBuilder.append(getSpaces(space)).append("summary: " + getSummary()).append("\n");
+        yamlStringBuilder.append(getSpaces(space++)).append("parameters:").append("\n");
+        for(CfArgument cfArgument: getCfArgumentList()){
+            yamlStringBuilder.append(cfArgument.getAsYamlString(space));
+        }
+        yamlStringBuilder.append(getSpaces(--space)).append("responses:").append("\n");
+        yamlStringBuilder.append(getSpaces(++space)).append("200:").append("\n");
+        yamlStringBuilder.append(getSpaces(++space)).append("description: "+ "Success").append("\n");
+
+        return yamlStringBuilder.toString();
+    }
+
 }
